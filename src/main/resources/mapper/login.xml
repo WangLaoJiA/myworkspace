@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.onlineproject.dao.LoginMapper">
+
+    <insert id="register" parameterType="com.example.onlineproject.entity.User" useGeneratedKeys="true">
+        INSERT INTO t_user(id, user, password, createtime)
+        VALUES (null , #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, NOW())
+    </insert>
+
+    <select id="select" resultType="java.lang.Integer" parameterType="com.example.onlineproject.entity.User">
+        SELECT count(1) FROM t_user WHERE user = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <select id="check" parameterType="com.example.onlineproject.entity.User" resultType="int">
+        SELECT count(1) FROM t_user WHERE user = #{name,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+    div{
+      display: block;
+    }
+    body {
+      background: url(img/1.jpg) no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      background-color: antiquewhite;
+    }
+    button {
+      outline:none;
+    }
+    h1 {
+      font-weight: bold;
+      margin-top: 15%;
+    }
+    form {
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 0 50px;
+      height: 100%;
+      text-align: center;
+    }
+    input {
+      background: #eee;
+      border: none;
+      padding: 12px 15px;
+      margin: 8px 0;
+      width: 100%;
+      outline: none;
+    }
+    a {
+      color: black;
+      font-size: 15px;
+      text-decoration: none;
+      margin: 20px 0;
+    }
+    .main {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22);
+      position: relative;
+      display: flex;
+      overflow: hidden;
+      width: 800px;
+      height: 480px;
+      max-width: 100%;
+      min-height: 480px;
+      margin: 5% auto 0 auto;
+    }
+    .Login_div {
+      background: #fff;
+      width: 50%;
+      height: 100%;
+      opacity: 1;
+      text-align: center;
+    }
+    .Options_div {
+      background: #fff;
+      background-color: #ff445e;
+      width: 50%;
+      height: 100%;
+      color: #fff;
+      text-align: center;
+    }
+    .Options_div h1{
+      margin:30% 0 30px 0;
+    }
+    .Options_div span{
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+    .Options_div button{
+      background: transparent;
+      border: 1px solid #fff;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 5px;
+      margin-top: 8%;
+    }
+    .Registered_div {
+      background: #fff;
+      width: 0;
+      height: 100%;
+      opacity: 0;
+    }
+    .Registered_div .submit_button{
+      margin-top: 5%;
+    }
+    .eneter{
+      margin-top: 10%;
+    }
+    .submit_button {
+      border-radius: 20px;
+      border: 1px solid #ff4b2b;
+      background: #ff4b2b;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 5px;
+    }
+    #Switch_Registered{
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+    }
+    #Switch_Login{
+      width: 100%;
+      height: 100%;
+      display: none;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="main">
+  <div class="Login_div">
+    <form action="#">
+      <h1>登录</h1>
+      <span>请登录您的账号</span>
+      <div class="eneter">
+        <input name="number" type="text" placeholder="账号" id="number">
+        <input name="password" type="password" placeholder="密码" id="password">
+      </div>
+      <a href="#">忘记密码？</a>
+      <button class="submit_button" onclick="login()">登录</button>
+    </form>
+  </div>
+  <div class="Options_div">
+    <div id="Switch_Registered">
+      <h1>还没有账号？</h1>
+      <p>立即注册，和我们一起开始旅程吧</p>
+      <button id="Registered_button">前往注册</button>
+    </div>
+    <div id="Switch_Login">
+      <h1>已有账号？</h1>
+      <p>请使用您的帐号进行登录</p>
+      <button id="Login_button">前往登录</button>
+    </div>
+  </div>
+  <div class="Registered_div">
+    <form action="#">
+      <h1>注册</h1>
+      <span>注册您的第一个账号</span>
+      <div class="eneter">
+        <input name="number" type="text" placeholder="账号" id="rname">
+        <input name="password" type="password" placeholder="密码" id="rpwd">
+        <input type="password" placeholder="确认密码" id="rrpwd">
+      </div>
+      <button class="submit_button" onclick="register()">注册</button>
+    </form>
+  </div>
+
+
+  <script>
+    $(function() {
+
+      $("#Registered_button").click(function(){
+        $(".Login_div").animate({width:"0",opacity:"0"});
+        $(".Registered_div").animate({width:"50%",opacity:"1"});
+        $("#Switch_Registered").animate({opacity:"0"});
+        $("#Switch_Login").animate({opacity:"1"});
+        $("#Switch_Registered").slideUp();
+        $("#Switch_Login").slideDown();
+      });
+
+      $("#Login_button").click(function(){
+        $(".Registered_div").animate({width:"0",opacity:"0"});
+        $(".Login_div").animate({width:"50%",opacity:"1"});
+        $("#Switch_Login").animate({opacity:"0"});
+        $("#Switch_Registered").animate({opacity:"1"});
+        $("#Switch_Login").slideUp();
+        $("#Switch_Registered").slideDown(500);
+      });
+    });
+
+
+    function login() {
+      var name = $("#number").val();
+      var password = $("#password").val();
+      $.ajax({
+        //向后台请求数据的方式
+        type: 'post',
+        //请求后台的地址可以简写
+        url: "/login",
+        data: {
+          name: name,
+          password: password
+        },
+        //成功调用后台方法后的回调函数
+        success: function (response) {
+          window.location.href = response;
+        },
+      });
+    };
+
+    function register() {
+      alert("注册")
+      var n = $("#rname").val();
+      var p = $("#rpwd").val();
+      var pp = $("#rrpwd").val();
+      if (p == pp){
+        $.ajax({
+          //向后台请求数据的方式
+          type: 'post',
+          //请求后台的地址可以简写
+          url: "http://localhost:8092/register",
+          data: {
+            name: n,
+            password: p
+          },
+          //成功调用后台方法后的回调函数
+          success: function (response) {
+            console.log(response)
+            if (response.code != '-1'){
+              alert(response.message)
+              window.location.href = response.result;
+            }else {
+              alert(response.message)
+            }
+          },
+        });
+      }else {
+        alert("两次输入密码不一致");
+        $("#Registered_button").click();
+      }
+    };
+  </script>
+
+
+</body>
+
+
+</html>
